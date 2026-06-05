@@ -1,7 +1,6 @@
 import pytest
-from typing import Optional
-from dirigent.llm.base import BaseLLMClient, LLMConfig, LLMResponse, Message
 
+from dirigent.llm.base import BaseLLMClient, LLMConfig, LLMResponse, Message
 
 # --- Minimal concrete implementation for testing ---
 
@@ -9,10 +8,10 @@ from dirigent.llm.base import BaseLLMClient, LLMConfig, LLMResponse, Message
 class ConcreteClient(BaseLLMClient):
     """Minimal implementation used to test BaseLLMClient behavior."""
 
-    def generate(self, prompt: str, system: Optional[str] = None) -> LLMResponse:
+    def generate(self, prompt: str, system: str | None = None) -> LLMResponse:
         return LLMResponse(content=f"response to: {prompt}", model=self.model)
 
-    def chat(self, messages: list[Message], system: Optional[str] = None) -> LLMResponse:
+    def chat(self, messages: list[Message], system: str | None = None) -> LLMResponse:
         last = messages[-1].content if messages else ""
         return LLMResponse(content=f"chat response to: {last}", model=self.model)
 
@@ -149,7 +148,7 @@ class TestAbstractEnforcement:
 
     def test_partial_implementation_raises(self) -> None:
         class Partial(BaseLLMClient):
-            def generate(self, prompt: str, system: Optional[str] = None) -> LLMResponse:
+            def generate(self, prompt: str, system: str | None = None) -> LLMResponse:
                 return LLMResponse(content="", model=self.model)
 
         with pytest.raises(TypeError):

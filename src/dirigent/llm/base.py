@@ -1,6 +1,5 @@
 from abc import ABC, abstractmethod
 from dataclasses import dataclass, field
-from typing import Optional
 
 
 @dataclass
@@ -20,7 +19,7 @@ class LLMResponse:
     prompt_tokens: int = 0
     completion_tokens: int = 0
     success: bool = True
-    error: Optional[str] = None
+    error: str | None = None
 
 
 @dataclass
@@ -52,7 +51,7 @@ class BaseLLMClient(ABC):
         self.timeout = config.timeout
 
     @abstractmethod
-    def generate(self, prompt: str, system: Optional[str] = None) -> LLMResponse:
+    def generate(self, prompt: str, system: str | None = None) -> LLMResponse:
         """
         Single-turn generation.
         One prompt in, one response out.
@@ -63,7 +62,7 @@ class BaseLLMClient(ABC):
     def chat(
         self,
         messages: list[Message],
-        system: Optional[str] = None,
+        system: str | None = None,
     ) -> LLMResponse:
         """
         Multi-turn conversation.
