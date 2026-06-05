@@ -30,8 +30,8 @@ class OllamaClient(BaseLLMClient):
             return LLMResponse(
                 content=str(data.get("response", "")).strip(),
                 model=self.model,
-                prompt_tokens=int(data.get("prompt_eval_count", 0)),
-                completion_tokens=int(data.get("eval_count", 0)),
+                prompt_tokens=int(str(data.get("prompt_eval_count", 0))),
+                completion_tokens=int(str(data.get("eval_count", 0))),
             )
         except httpx.TimeoutException:
             return self.build_error("Timeout — model took too long to respond.")
@@ -67,8 +67,8 @@ class OllamaClient(BaseLLMClient):
             return LLMResponse(
                 content=content,
                 model=self.model,
-                prompt_tokens=int(data.get("prompt_eval_count", 0)),
-                completion_tokens=int(data.get("eval_count", 0)),
+                prompt_tokens=int(str(data.get("prompt_eval_count", 0))),
+                completion_tokens=int(str(data.get("eval_count", 0))),
             )
         except httpx.TimeoutException:
             return self.build_error("Timeout — model took too long to respond.")
